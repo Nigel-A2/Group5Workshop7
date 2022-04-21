@@ -18,7 +18,8 @@
             }
         }
 
-        async function fetchPackage(id) {
+        async function fetchPackage(id)
+        {
             var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/package/get/" + id;
             var response = await fetch(url);
             if (!response.ok)
@@ -37,6 +38,69 @@
             $("#PkgAgencyCommission").val(packageJSON.pkgAgencyCommission);
 
         }
+
+        // there is no user-visible feedback on this
+        async function postPackage()
+        {
+            var startdate = dayjs($("#PkgStartDate").val()).format("MMM DD, YYYY");
+            var enddate = dayjs($("#PkgEndDate").val()).format("MMM DD, YYYY");
+            const postData =
+                {
+                "packageId":$("#PackageId").val(),
+                "pkgName":$("#PkgName").val(),
+                "pkgStartDate":startdate,
+                "pkgEndDate":enddate,
+                "pkgDesc":$("#PkgDesc").val(),
+                "pkgBasePrice":$("#PkgBasePrice").val(),
+                "pkgAgencyCommission":$("#PkgAgencyCommission").val()
+            };
+
+            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/package/update";
+            try
+            {
+                const response = await fetch(url,
+                    {
+                        method: "post",
+                        headers: {"Content-type": "application/json"},
+                        body: JSON.stringify(postData)
+                    });
+                if (!response.ok)
+                {
+                    const message = "Update failed: status=" + response.status;
+                    throw new Error(message);
+                }
+                const data = await response.json();
+                $("#message").html(data.message);
+            }
+            catch (e)
+            {
+                console.log("Error: " + e);
+            }
+        }
+
+        // the page should be reloaded after executing this function
+        async function deletePackage()
+        {
+            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/package/delete/" + $("#PackageId").val();
+            try
+            {
+                const response = await fetch(url,
+                    {
+                        method: "delete"
+                    });
+                if (!response.ok)
+                {
+                    const message = "Delete failed: status=" + response.status;
+                    throw new Error(message);
+                }
+                const data = await response.json();
+                $("#message").html(data.message);
+            }
+            catch (e)
+            {
+                console.log("Error: " + e);
+            }
+        }
     </script>
 </head>
 <body>
@@ -51,6 +115,9 @@
     Description:<input id="PkgDesc" type="text" /><br />
     Base Price:<input id="PkgBasePrice" type="number" step=".01" /><br />
     Commission:<input id="PkgAgencyCommission" type="number" step=".01" /><br />
+    <button type="button" onclick="postPackage()">Update</button>
+    <button type="button" onclick="deletePackage()">Delete</button><br />
+    <a href="createpackage.html">Add a new package</a>
 </form>
 <script>
     $(document).ready(function(){
