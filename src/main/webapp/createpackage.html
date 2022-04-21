@@ -11,7 +11,8 @@
         {
             var startdate = dayjs($("#PkgStartDate").val()).format("MMM DD, YYYY");
             var enddate = dayjs($("#PkgEndDate").val()).format("MMM DD, YYYY");
-            const putData = {
+            const putData =
+                {
                 "packageId":0,
                 "pkgName":$("#PkgName").val(),
                 "pkgStartDate":startdate,
@@ -29,13 +30,16 @@
                         headers: {"Content-type": "application/json"},
                         body: JSON.stringify(putData)
                     });
-                if (!response.ok) {
+                if (!response.ok)
+                {
                     const message = "Insert failed: status=" + response.status;
                     throw new Error(message);
                 }
                 const data = await response.json();
                 $("#message").html(data.message);
-            } catch (e) {
+            }
+            catch (e)
+            {
                 console.log("Error: " + e);
             }
         }

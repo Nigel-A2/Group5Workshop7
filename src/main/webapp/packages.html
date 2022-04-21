@@ -95,6 +95,7 @@
                 }
                 const data = await response.json();
                 $("#message").html(data.message);
+                location.reload();
             }
             catch (e)
             {
