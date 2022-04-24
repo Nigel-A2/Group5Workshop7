@@ -37,7 +37,7 @@
             $("#CustHomePhone").val(customerJSON.custHomePhone);
             $("#CustBusPhone").val(customerJSON.custBusPhone);
             $("#CustEmail").val(customerJSON.custEmail);
-
+            $("#AgentId").val(customerJSON.agentId);
         }
 
         // there is no user-visible feedback on this
@@ -46,12 +46,17 @@
             const postData =
                 {
                     "customerId":$("#CustomerId").val(),
-                    "custFirstName":$("#").val(),
-                    "custLastName":startdate,
-                    "custAddress":enddate,
-                    "custCity":$("#PkgDesc").val(),
-                    "custProv":$("#PkgBasePrice").val(),
-                    "custPostal":$("#PkgAgencyCommission").val()
+                    "custFirstName":$("#CustFirstName").val(),
+                    "custLastName":$("#CustLastName").val(),
+                    "custAddress":$("#CustAddress").val(),
+                    "custCity":$("#CustCity").val(),
+                    "custProv":$("#CustProv").val(),
+                    "custPostal":$("#CustPostal").val(),
+                    "custCountry":$("#CustCountry").val(),
+                    "custHomePhone":$("#CustHomePhone").val(),
+                    "custBusPhone":$("#CustBusPhone").val(),
+                    "custEmail":$("#CustEmail").val(),
+                    "agentId":$("#AgentId").val()
                 };
 
             var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/customer/update";
@@ -104,11 +109,12 @@
     </script>
 </head>
 <body>
-<select id="packageselect" onchange="fetchPackage(this.value)">
+<p id="message"></p>
+<select id="customerselect" onchange="fetchCustomer(this.value)">
     <option value="">Select a package to view details</option>
 </select>
 <form>
-    Id:<input id="CustomerId" type="number" disabled="disabled" /><br />
+    Customer ID:<input id="CustomerId" type="number" disabled="disabled" /><br />
     First Name:<input id="CustFirstName" type="text" /><br />
     Last Name:<input id="CustLastName" type="text" /><br />
     Address:<input id="CustAddress" type="text" /><br />
@@ -119,13 +125,14 @@
     Home phone:<input id="CustHomePhone" type="text" /><br />
     Business phone (optional):<input id="CustBusPhone" type="text" /><br />
     Email:<input id="CustEmail" type="text" /><br />
-    <button type="button" onclick="postPackage()">Update</button>
-    <button type="button" onclick="deletePackage()">Delete</button><br />
+    Agent ID:<input id="AgentId" type="number" /><br />
+    <button type="button" onclick="postCustomer()">Update</button>
+    <button type="button" onclick="deleteCustomer()">Delete</button><br />
     <a href="createpackage.html">Add a new package</a>
 </form>
 <script>
     $(document).ready(function(){
-        fetchPackages();
+        fetchCustomers();
     });
 </script>
 </body>

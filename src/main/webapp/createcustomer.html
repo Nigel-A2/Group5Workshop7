@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Package insert</title>
+    <script   src="https://code.jquery.com/jquery-3.6.0.js"   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="   crossorigin="anonymous"></script>
+    <script>
+        async function putCustomer()
+        {
+            const putData =
+                {
+                    "customerId":$("#CustomerId").val(),
+                    "custFirstName":$("#CustFirstName").val(),
+                    "custLastName":$("#CustLastName").val(),
+                    "custAddress":$("#CustAddress").val(),
+                    "custCity":$("#CustCity").val(),
+                    "custProv":$("#CustProv").val(),
+                    "custPostal":$("#CustPostal").val(),
+                    "custCountry":$("#CustCountry").val(),
+                    "custHomePhone":$("#CustHomePhone").val(),
+                    "custBusPhone":$("#CustBusPhone").val(),
+                    "custEmail":$("#CustEmail").val(),
+                    "agentId":null
+                };
+
+            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/customer/create";
+            try {
+                const response = await fetch(url,
+                    {
+                        method: "put",
+                        headers: {"Content-type": "application/json"},
+                        body: JSON.stringify(putData)
+                    });
+                if (!response.ok)
+                {
+                    const message = "Insert failed: status=" + response.status;
+                    throw new Error(message);
+                }
+                const data = await response.json();
+                $("#message").html(data.message);
+            }
+            catch (e)
+            {
+                console.log("Error: " + e);
+            }
+        }
+    </script>
+</head>
+<body>
+<p id="message"></p>
+<form>
+    Id:<input id="CustomerId" type="number" disabled="disabled" /><br />
+    First Name:<input id="CustFirstName" type="text" /><br />
+    Last Name:<input id="CustLastName" type="text" /><br />
+    Address:<input id="CustAddress" type="text" /><br />
+    City:<input id="CustCity" type="text" /><br />
+    Province/state:<input id="CustProv" type="text"/><br />
+    Postal code:<input id="CustPostal" type="text" /><br />
+    Country:<input id="CustCountry" type="text" /><br />
+    Home phone:<input id="CustHomePhone" type="text" /><br />
+    Business phone (optional):<input id="CustBusPhone" type="text" /><br />
+    Email:<input id="CustEmail" type="text" /><br />
+    <button type="button" onclick="putCustomer()">Insert</button>
+</form>
+</body>
+</html>
