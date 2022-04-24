@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Packages</title>
+    <script   src="https://code.jquery.com/jquery-3.6.0.js"   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="   crossorigin="anonymous"></script>
+    <script>
+        async function fetchCustomers()
+        {
+            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/customer/list";
+            var customers = await fetch(url);
+            var customersJSON = await customers.json();
+            for (i=0; i<customersJSON.length; i++)
+            {
+                $("#customerselect").append("<option value='" + customersJSON[i].customerId + "'>"
+                    + customersJSON[i].custFirstName + " " + customersJSON[i].custLastName + "</option>");
+            }
+        }
+
+        async function fetchCustomer(id)
+        {
+            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/customer/get/" + id;
+            var response = await fetch(url);
+            if (!response.ok)
+            {
+                throw new Error("Error occurred, status code = " + response.status);
+            }
+            var customerJSON = await response.json();
+            $("#CustomerId").val(customerJSON.customerId);
+            $("#CustFirstName").val(customerJSON.custFirstName);
+            $("#CustLastName").val(customerJSON.custLastName);
+            $("#CustAddress").val(customerJSON.custAddress);
+            $("#CustCity").val(customerJSON.custCity);
+            $("#CustProv").val(customerJSON.custProv);
+            $("#CustPostal").val(customerJSON.custPostal);
+            $("#CustCountry").val(customerJSON.custCountry);
+            $("#CustHomePhone").val(customerJSON.custHomePhone);
+            $("#CustBusPhone").val(customerJSON.custBusPhone);
+            $("#CustEmail").val(customerJSON.custEmail);
+
+        }
+
+        // there is no user-visible feedback on this
+        async function postCustomer()
+        {
+            const postData =
+                {
+                    "customerId":$("#CustomerId").val(),
+                    "custFirstName":$("#").val(),
+                    "custLastName":startdate,
+                    "custAddress":enddate,
+                    "custCity":$("#PkgDesc").val(),
+                    "custProv":$("#PkgBasePrice").val(),
+                    "custPostal":$("#PkgAgencyCommission").val()
+                };
+
+            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/customer/update";
+            try
+            {
+                const response = await fetch(url,
+                    {
+                        method: "post",
+                        headers: {"Content-type": "application/json"},
+                        body: JSON.stringify(postData)
+                    });
+                if (!response.ok)
+                {
+                    const message = "Update failed: status=" + response.status;
+                    throw new Error(message);
+                }
+                const data = await response.json();
+                $("#message").html(data.message);
+            }
+            catch (e)
+            {
+                console.log("Error: " + e);
+            }
+        }
+
+        // the page should be reloaded after executing this function
+        async function deleteCustomer()
+        {
+            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/customer/delete/" + $("#CustomerId").val();
+            try
+            {
+                const response = await fetch(url,
+                    {
+                        method: "delete"
+                    });
+                if (!response.ok)
+                {
+                    const message = "Delete failed: status=" + response.status;
+                    throw new Error(message);
+                }
+                const data = await response.json();
+                $("#message").html(data.message);
+                location.reload();
+            }
+            catch (e)
+            {
+                console.log("Error: " + e);
+            }
+        }
+    </script>
+</head>
+<body>
+<select id="packageselect" onchange="fetchPackage(this.value)">
+    <option value="">Select a package to view details</option>
+</select>
+<form>
+    Id:<input id="CustomerId" type="number" disabled="disabled" /><br />
+    First Name:<input id="CustFirstName" type="text" /><br />
+    Last Name:<input id="CustLastName" type="text" /><br />
+    Address:<input id="CustAddress" type="text" /><br />
+    City:<input id="CustCity" type="text" /><br />
+    Province/state:<input id="CustProv" type="text"/><br />
+    Postal code:<input id="CustPostal" type="text" /><br />
+    Country:<input id="CustCountry" type="text" /><br />
+    Home phone:<input id="CustHomePhone" type="text" /><br />
+    Business phone (optional):<input id="CustBusPhone" type="text" /><br />
+    Email:<input id="CustEmail" type="text" /><br />
+    <button type="button" onclick="postPackage()">Update</button>
+    <button type="button" onclick="deletePackage()">Delete</button><br />
+    <a href="createpackage.html">Add a new package</a>
+</form>
+<script>
+    $(document).ready(function(){
+        fetchPackages();
+    });
+</script>
+</body>
+</html>
