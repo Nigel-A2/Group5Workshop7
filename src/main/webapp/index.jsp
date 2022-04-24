@@ -2,12 +2,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>TravelExperts - Home</title>
 </head>
 <body>
-<h1><%= "Hello World!" %>
+<h1><%= "Welcome to TravelExperts!" %>
 </h1>
 <br/>
-<a href="packages.html">Packages</a>
+<a href="packages.html">Packages</a><br />
+<a href="Customers.html">Customers</a><br />
 </body>
 </html>
