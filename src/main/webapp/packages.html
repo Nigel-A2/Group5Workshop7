@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Packages</title>
+    <title>TravelExperts - Packages</title>
     <script   src="https://code.jquery.com/jquery-3.6.0.js"   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="   crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.1/dayjs.min.js"></script>
     <script>
@@ -95,7 +95,7 @@
                 }
                 const data = await response.json();
                 $("#message").html(data.message);
-                location.reload();
+                //location.reload();
             }
             catch (e)
             {
@@ -110,7 +110,7 @@
     <option value="">Select a package to view details</option>
 </select>
 <form>
-    Id:<input id="PackageId" type="number" disabled="disabled" /><br />
+    Package ID:<input id="PackageId" type="number" disabled="disabled" /><br />
     Name:<input id="PkgName" type="text" /><br />
     Start Date:<input id="PkgStartDate" type="date" /><br />
     End Date:<input id="PkgEndDate" type="date" /><br />

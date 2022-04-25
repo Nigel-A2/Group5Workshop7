@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TravelExperts - create customer</title>
+    <script   src="https://code.jquery.com/jquery-3.6.0.js"   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="   crossorigin="anonymous"></script>
+    <script>
+        async function createProduct()
+        {
+            const putData =
+                {
+                    "productId":0,
+                    "prodName":$("#ProdName").val()
+                };
+
+            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/product/create";
+            try {
+                const response = await fetch(url,
+                    {
+                        method: "put",
+                        headers: {"Content-type": "application/json"},
+                        body: JSON.stringify(putData)
+                    });
+                if (!response.ok)
+                {
+                    const message = "Insert failed: status=" + response.status;
+                    throw new Error(message);
+                }
+                const data = await response.json();
+                $("#message").html(data.message);
+            }
+            catch (e)
+            {
+                console.log("Error: " + e);
+            }
+        }
+    </script>
+</head>
+<body>
+<p id="message"></p>
+<form>
+    Product ID:<input id="ProductId" type="text" value="auto-generated" disabled="disabled" /><br />
+    Name:<input id="ProdName" type="text" /><br />
+    <a href="products.html">
+        <button type="button" onclick="createProduct()">Insert</button>
+    </a><br />
+    <a href="products.html">Back</a>
+</form>
+</body>
+</html>
