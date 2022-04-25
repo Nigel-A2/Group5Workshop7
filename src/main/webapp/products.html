@@ -35,7 +35,7 @@
         {
             const postData =
                 {
-                    "productId":$("#ProductIdId").val(),
+                    "productId":$("#ProductId").val(),
                     "prodName":$("#ProdName").val()
                 };
 
@@ -65,7 +65,7 @@
         // the page should be reloaded after executing this function
         async function deleteProduct()
         {
-            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/product/delete/" + $("#CustomerId").val();
+            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/product/delete/" + $("#ProductId").val();
             try
             {
                 const response = await fetch(url,
