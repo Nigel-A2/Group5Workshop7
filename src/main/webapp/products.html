@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TravelExperts - Products</title>
+    <script   src="https://code.jquery.com/jquery-3.6.0.js"   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="   crossorigin="anonymous"></script>
+    <script>
+        async function fetchProductList()
+        {
+            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/product/list";
+            var products = await fetch(url);
+            var productsJSON = await products.json();
+            for (i=0; i<productsJSON.length; i++)
+            {
+                $("#productselect").append("<option value='" + productsJSON[i].productId + "'>"
+                    + productsJSON[i].prodName + "</option>");
+            }
+        }
+
+        async function fetchProduct(id)
+        {
+            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/product/get/" + id;
+            var response = await fetch(url);
+            if (!response.ok)
+            {
+                throw new Error("Error occurred, status code = " + response.status);
+            }
+            var productJSON = await response.json();
+            $("#ProductId").val(productJSON.productId);
+            $("#ProdName").val(productJSON.prodName);
+        }
+
+        // there is no user-visible feedback on this
+        async function updateProduct()
+        {
+            const postData =
+                {
+                    "productId":$("#ProductId").val(),
+                    "prodName":$("#ProdName").val()
+                };
+
+            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/product/update";
+            try
+            {
+                const response = await fetch(url,
+                    {
+                        method: "post",
+                        headers: {"Content-type": "application/json"},
+                        body: JSON.stringify(postData)
+                    });
+                if (!response.ok)
+                {
+                    const message = "Update failed: status=" + response.status;
+                    throw new Error(message);
+                }
+                const data = await response.json();
+                $("#message").html(data.message);
+            }
+            catch (e)
+            {
+                console.log("Error: " + e);
+            }
+        }
+
+        // the page should be reloaded after executing this function
+        async function deleteProduct()
+        {
+            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/product/delete/" + $("#ProductId").val();
+            try
+            {
+                const response = await fetch(url,
+                    {
+                        method: "delete"
+                    });
+                if (!response.ok)
+                {
+                    const message = "Delete failed: status=" + response.status;
+                    throw new Error(message);
+                }
+                const data = await response.json();
+                $("#message").html(data.message);
+                //location.reload();
+            }
+            catch (e)
+            {
+                console.log("Error: " + e);
+            }
+        }
+    </script>
+</head>
+<body>
+<p id="message"></p>
+<select id="productselect" onchange="fetchProduct(this.value)">
+    <option value="">Select a package to view details</option>
+</select>
+<form>
+    Product ID:<input id="ProductId" type="number" disabled="disabled" /><br />
+    Name:<input id="ProdName" type="text" /><br />
+    <button type="button" onclick="updateProduct()">Update</button>
+    <button type="button" onclick="deleteProduct()">Delete</button><br />
+    <a href="createproduct.html">Add a new product</a><br />
+    <a href="index.jsp">Back</a>
+</form>
+<script>
+    $(document).ready(function(){
+        fetchProductList();
+    });
+</script>
+</body>
+</html>

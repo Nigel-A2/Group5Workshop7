@@ -10,5 +10,6 @@
 <br/>
 <a href="packages.html">Packages</a><br />
 <a href="Customers.html">Customers</a><br />
+<a href="products.html">Products</a><br />
 </body>
 </html>

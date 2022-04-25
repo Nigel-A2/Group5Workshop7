@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Package insert</title>
+    <title>TravelExperts - create package</title>
     <script   src="https://code.jquery.com/jquery-3.6.0.js"   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="   crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.1/dayjs.min.js"></script>
     <script>
@@ -48,17 +48,15 @@
 <body>
 <p id="message"></p>
 <form>
-    Id:<input id="PackageId" type="number" disabled="disabled" /><br />
+    Package ID:<input id="PackageId" type="number" disabled="disabled" /><br />
     Name:<input id="PkgName" type="text" /><br />
     Start Date:<input id="PkgStartDate" type="date" /><br />
     End Date:<input id="PkgEndDate" type="date" /><br />
     Description:<input id="PkgDesc" type="text" /><br />
     Base Price:<input id="PkgBasePrice" type="number" step=".01" /><br />
     Commission:<input id="PkgAgencyCommission" type="number" step=".01" /><br />
-    <a href="packages.html">
-        <button type="button" onclick="putPackage()">Insert</button>
-    </a><br />
-    <a href="index.jsp">Back</a>
+    <button type="button" onclick="putPackage()">Insert</button><br />
+    <a href="packages.html">Back</a>
 </form>
 </body>
 </html>
