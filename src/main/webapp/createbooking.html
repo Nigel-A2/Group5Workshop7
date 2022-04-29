@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TravelExperts - create package</title>
+    <script   src="https://code.jquery.com/jquery-3.6.0.js"   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="   crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.1/dayjs.min.js"></script>
+    <script>
+        // the dates are being added as 0000-00-00, likely due to the string typing in the REST API
+        async function putPackage()
+        {
+            var startdate = dayjs($("#PkgStartDate").val()).format("MMM DD, YYYY");
+            var enddate = dayjs($("#PkgEndDate").val()).format("MMM DD, YYYY");
+            const putData =
+                {
+                    "packageId":0,
+                    "pkgName":$("#PkgName").val(),
+                    "pkgStartDate":startdate,
+                    "pkgEndDate":enddate,
+                    "pkgDesc":$("#PkgDesc").val(),
+                    "pkgBasePrice":$("#PkgBasePrice").val(),
+                    "pkgAgencyCommission":$("#PkgAgencyCommission").val()
+                };
+
+            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/package/create";
+            try {
+                const response = await fetch(url,
+                    {
+                        method: "put",
+                        headers: {"Content-type": "application/json"},
+                        body: JSON.stringify(putData)
+                    });
+                if (!response.ok)
+                {
+                    const message = "Insert failed: status=" + response.status;
+                    throw new Error(message);
+                }
+                const data = await response.json();
+                $("#message").html(data.message);
+            }
+            catch (e)
+            {
+                console.log("Error: " + e);
+            }
+        }
+    </script>
+</head>
+<body>
+<p id="message"></p>
+<form>
+    Package ID:<input id="PackageId" type="number" disabled="disabled" /><br />
+    Name:<input id="PkgName" type="text" /><br />
+    Start Date:<input id="PkgStartDate" type="date" /><br />
+    End Date:<input id="PkgEndDate" type="date" /><br />
+    Description:<input id="PkgDesc" type="text" /><br />
+    Base Price:<input id="PkgBasePrice" type="number" step=".01" /><br />
+    Commission:<input id="PkgAgencyCommission" type="number" step=".01" /><br />
+    <button type="button" onclick="putPackage()">Insert</button><br />
+    <a href="packages.html">Back</a>
+</form>
+</body>
+</html>
