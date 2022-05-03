@@ -7,23 +7,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.1/dayjs.min.js"></script>
     <script>
         // the dates are being added as 0000-00-00, likely due to the string typing in the REST API
-        async function putPackage()
+        async function createBooking()
         {
-            var startdate = dayjs($("#PkgStartDate").val()).format("MMM DD, YYYY");
-            var enddate = dayjs($("#PkgEndDate").val()).format("MMM DD, YYYY");
+            var bookingdate = dayjs($("#BookingDate").val()).format("MMM DD, YYYY");
             const putData =
                 {
-                "packageId":0,
-                "pkgName":$("#PkgName").val(),
-                "pkgStartDate":startdate,
-                "pkgEndDate":enddate,
-                "pkgDesc":$("#PkgDesc").val(),
-                "pkgBasePrice":$("#PkgBasePrice").val(),
-                "pkgAgencyCommission":$("#PkgAgencyCommission").val()
-            };
-            console.log("startdate: " + startdate);
-            console.log("enddate: " + enddate);
-            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/package/create";
+                    "bookingId":0,
+                    "bookingDate":bookingdate,
+                    "bookingNo":$("#BookingNo").val(),
+                    "travelerCount":$("#TravelerCount").val(),
+                    "customerId":$("#CustomerId").val(),
+                    "packageId":$("#PackageId").val()
+                };
+            console.log(bookingdate);
+            console.log(JSON.stringify(putData));
+            // IMPORTANT: despite the supposed JSON syntax error that the browser console gives when making the put request, the bookings are created just fine.
+            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/booking/create";
             try {
                 const response = await fetch(url,
                     {
@@ -49,15 +48,14 @@
 <body>
 <p id="message"></p>
 <form>
-    Package ID:<input id="PackageId" type="number" disabled="disabled" /><br />
-    Name:<input id="PkgName" type="text" /><br />
-    Start Date:<input id="PkgStartDate" type="date" /><br />
-    End Date:<input id="PkgEndDate" type="date" /><br />
-    Description:<input id="PkgDesc" type="text" /><br />
-    Base Price:<input id="PkgBasePrice" type="number" step=".01" /><br />
-    Commission:<input id="PkgAgencyCommission" type="number" step=".01" /><br />
-    <button type="button" onclick="putPackage()">Insert</button><br />
-    <a href="packages.html">Back</a>
+    Booking ID:<input id="BookingId" type="number" disabled="disabled" /><br />
+    Booking date:<input id="BookingDate" type="date" /><br />
+    Booking number:<input id="BookingNo" type="text" /><br />
+    Traveler count:<input id="TravelerCount" type="number" /><br />
+    Customer ID:<input id="CustomerId" type="number" /><br />
+    Package ID:<input id="PackageId" type="number" /><br />
+    <button type="button" onclick="createBooking()">Insert</button><br />
+    <a href="bookings.html">Back</a>
 </form>
 </body>
 </html>

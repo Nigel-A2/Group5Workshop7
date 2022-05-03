@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TravelExperts - Packages</title>
+    <script   src="https://code.jquery.com/jquery-3.6.0.js"   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="   crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.1/dayjs.min.js"></script>
+    <script>
+        async function fetchBookingsList()
+        {
+            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/booking/list";
+            var bookings = await fetch(url);
+            var bookingsJSON = await bookings.json();
+            for (i=0; i<bookingsJSON.length; i++)
+            {
+                $("#bookingselect").append("<option value='" + bookingsJSON[i].bookingId + "'>"
+                    + bookingsJSON[i].bookingNo + "</option>");
+            }
+        }
+
+        async function fetchBooking(id)
+        {
+            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/booking/get/" + id;
+            var response = await fetch(url);
+            if (!response.ok)
+            {
+                throw new Error("Error occurred, status code = " + response.status);
+            }
+            var bookingJSON = await response.json();
+            $("#BookingId").val(bookingJSON.bookingId);
+            var bookingdate = dayjs(bookingJSON.bookingDate).format("YYYY-MM-DD");
+            $("#BookingDate").val(bookingdate);
+            $("#BookingNo").val(bookingJSON.bookingNo);
+            $("#TravelerCount").val(bookingJSON.travelerCount);
+            $("#CustomerId").val(bookingJSON.customerId);
+            $("#TripTypeId").val(bookingJSON.tripTypeId);
+            $("#PackageId").val(bookingJSON.packageId);
+        }
+
+        async function updateBooking()
+        {
+            var bookingdate = dayjs($("#BookingDate").val()).format("MMM DD, YYYY");
+            const postData =
+                {
+                    "bookingId":$("#BookingId").val(),
+                    "bookingDate":bookingdate,
+                    "bookingNo":$("#BookingNo").val(),
+                    "travelerCount":$("#TravelerCount").val(),
+                    "customerId":$("#CustomerId").val(),
+                    "packageId":$("#PackageId").val()
+                };
+            console.log(bookingdate);
+            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/booking/update";
+            try
+            {
+                const response = await fetch(url,
+                    {
+                        method: "post",
+                        headers: {"Content-type": "application/json"},
+                        body: JSON.stringify(postData)
+                    });
+                if (!response.ok)
+                {
+                    const message = "Update failed: status=" + response.status;
+                    throw new Error(message);
+                }
+                const data = await response.json();
+                $("#message").html(data.message);
+            }
+            catch (e)
+            {
+                console.log("Error: " + e);
+            }
+        }
+
+        // the page should be reloaded after executing this function
+        async function deleteBooking()
+        {
+            var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/booking/delete/" + $("#BookingId").val();
+            try
+            {
+                const response = await fetch(url,
+                    {
+                        method: "delete"
+                    });
+                if (!response.ok)
+                {
+                    const message = "Delete failed: status=" + response.status;
+                    throw new Error(message);
+                }
+                const data = await response.json();
+                $("#message").html(data.message);
+            }
+            catch (e)
+            {
+                console.log("Error: " + e);
+            }
+        }
+    </script>
+</head>
+<body>
+<p id="message"></p>
+<select id="bookingselect" onchange="fetchBooking(this.value)">
+    <option value="">Select a package to view details</option>
+</select>
+<form>
+    Booking ID:<input id="BookingId" type="number" disabled="disabled" /><br />
+    Booking date:<input id="BookingDate" type="date" /><br />
+    Booking number:<input id="BookingNo" type="text" /><br />
+    Traveler count:<input id="TravelerCount" type="number" /><br />
+    Customer ID:<input id="CustomerId" type="number" /><br />
+    Package ID:<input id="PackageId" type="number" /><br />
+    <button type="button" onclick="updateBooking()">Update</button>
+    <button type="button" onclick="deleteBooking()">Delete</button><br />
+    <a href="createbooking.html">Add a new booking</a><br />
+    <a href="index.jsp">Back</a>
+</form>
+<script>
+    $(document).ready(function(){
+        fetchBookingsList();
+    });
+</script>
+</body>
+</html>
