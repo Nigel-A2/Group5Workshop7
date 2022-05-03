@@ -12,15 +12,16 @@
             var bookingdate = dayjs($("#BookingDate").val()).format("MMM DD, YYYY");
             const putData =
                 {
-                    "bookingId":$("#BookingId").val(),
-                    "pkgName":bookingdate,
+                    "bookingId":0,
+                    "bookingDate":bookingdate,
                     "bookingNo":$("#BookingNo").val(),
                     "travelerCount":$("#TravelerCount").val(),
                     "customerId":$("#CustomerId").val(),
-                    "tripTypeId":$("#TripTypeId").val(),
                     "packageId":$("#PackageId").val()
                 };
-
+            console.log(bookingdate);
+            console.log(JSON.stringify(putData));
+            // IMPORTANT: despite the supposed JSON syntax error that the browser console gives when making the put request, the bookings are created just fine.
             var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/booking/create";
             try {
                 const response = await fetch(url,
@@ -52,7 +53,6 @@
     Booking number:<input id="BookingNo" type="text" /><br />
     Traveler count:<input id="TravelerCount" type="number" /><br />
     Customer ID:<input id="CustomerId" type="number" /><br />
-    Trip type ID:<input id="TripTypeId" type="number" /><br />
     Package ID:<input id="PackageId" type="number" /><br />
     <button type="button" onclick="createBooking()">Insert</button><br />
     <a href="bookings.html">Back</a>

@@ -43,14 +43,13 @@
             const postData =
                 {
                     "bookingId":$("#BookingId").val(),
-                    "pkgName":bookingdate,
+                    "bookingDate":bookingdate,
                     "bookingNo":$("#BookingNo").val(),
                     "travelerCount":$("#TravelerCount").val(),
                     "customerId":$("#CustomerId").val(),
-                    "tripTypeId":$("#TripTypeId").val(),
                     "packageId":$("#PackageId").val()
                 };
-
+            console.log(bookingdate);
             var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/booking/update";
             try
             {
@@ -110,7 +109,6 @@
     Booking number:<input id="BookingNo" type="text" /><br />
     Traveler count:<input id="TravelerCount" type="number" /><br />
     Customer ID:<input id="CustomerId" type="number" /><br />
-    Trip type ID:<input id="TripTypeId" type="number" /><br />
     Package ID:<input id="PackageId" type="number" /><br />
     <button type="button" onclick="updateBooking()">Update</button>
     <button type="button" onclick="deleteBooking()">Delete</button><br />

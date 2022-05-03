@@ -21,7 +21,8 @@
                 "pkgBasePrice":$("#PkgBasePrice").val(),
                 "pkgAgencyCommission":$("#PkgAgencyCommission").val()
             };
-
+            console.log("startdate: " + startdate);
+            console.log("enddate: " + enddate);
             var url = "http://localhost:8080/Group5_REST_service_war_exploded/api/package/create";
             try {
                 const response = await fetch(url,
