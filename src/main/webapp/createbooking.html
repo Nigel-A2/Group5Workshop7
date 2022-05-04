@@ -7,7 +7,7 @@
     <script   src="https://code.jquery.com/jquery-3.6.0.js"   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="   crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.1/dayjs.min.js"></script>
     <script>
-        // the dates are being added as 0000-00-00, likely due to the string typing in the REST API
+        // the dates are being added as 0000-00-00, due to the way dayjs formats the dates. We would have to change the datetime columns to varchar if we want to continue using this code.
         async function createBooking()
         {
             var bookingdate = dayjs($("#BookingDate").val()).format("MMM DD, YYYY");
